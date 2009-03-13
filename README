@@ -1,0 +1,125 @@
+This widget converts ul/li tree to tree that allows to expand/collapse its branches.
+It creates links with 'onclick' events, when user click on these links, branches
+will be expanded (if it is collapsed) or collapsed (if it is expanded).
+
+== xHTML Format of tree
+
+With root:
+
+  <div class="treeview">
+    <!-- Expand/Collapse link will be placed here. Like: -->
+    <!-- <a href="#" class="expand tree-handler">+</a> -->
+    <div>Root</div>
+    <ul>
+      <li>
+        <!-- Expand/Collapse link will be placed here -->
+        <div>...something here, name of branch, links, inputs, etc.</div>
+        <ul>
+          <!-- Expand/Collapse link will be placed here -->
+          <div>...somenthing here...</div>
+          <li>...and so on</li>
+        </ul>
+      </li>
+      <li>...and so on</li>
+    </ul>
+  </div>
+
+Without root:
+
+  <div class="treeview">
+    <ul>
+      <li>
+        <!-- Expand/Collapse link will be placed here -->
+        <div>...something here, name of branch, links, inputs, etc.</div>
+        <ul>
+          <!-- Expand/Collapse link will be placed here -->
+          <div>...somenthing here...</div>
+          <li>...and so on</li>
+        </ul>
+      </li>
+      <li>...and so on</li>
+    </ul>
+  </div>
+
+
+== Using
+
+// Initialize tree, creates links and collapse all branches
+
+  $('.treeview').tree(); 
+
+// Expand some branch
+
+  $('.treeview').tree('expand', ul); // ul is jQuery object
+  $('.treeview').tree('expand', ul, 'slide'); // use slideDown() instead of show() 
+  $('.treeview').tree('expand', 'ul#branch'); 
+
+// Collapse some branch
+
+  $('.treeview').tree('collapse', ul); // ul is jQuery object
+  $('.treeview').tree('collapse', ul, 'slide'); // use slideUp() instead of hide()
+  $('.treeview').tree('collapse', 'ul#branch');
+
+// Update the tree (if your scripts changed structure of the tree)
+
+  $('.treeview').tree('update'); 
+
+// Getter method, returns true if branch is collapsed
+
+  $('.treeview').tree('is_collapsed', ul); // ul is jQuery object 
+  $('.treeview').tree('is_collapsed', 'ul#branch');
+
+
+== Options
+
+1. 'expand_char' - Character that will be used for expanding link. Default is &rarr; - right arrow.
+2. 'collapse_char' - Character that will be used for expanding link. Default is &uarr; - up arrow.
+3. 'collapse_after_init' - Collapse all branches after initialization. Default is true.
+4. 'add_expand_all' - Add 'Expand All' link that expands all branches before the tree. Default is true.
+5. 'add_collapse_all' - Add 'Collapse All' link that collapses all branches before the tree. Default is true.
+6. 'expand_all_text' - Text that 'Expand All' link will contain. Default is 'Expand All'.
+7. 'collapse_all_text' - Text that 'Collapse All' link will contain. Default is 'Collapse All'.
+8. 'handle_for_dragging' - Selector for handle for dragging. This element should be contained in
+   <div></div> section. Default is null. If this parameter is null, then drag'n'drop will be disabled. 
+   Example:
+   
+   <div class="treeview">
+     <ul>
+       <li>
+         <!-- Expand/Collapse link will be placed here -->
+         <div><span class="name">My Element</span></div>
+       </li>
+       <li>...</li>
+     </ul>
+   </div>
+   
+   <script type="text/javascript"> $('.treeview').tree({handle_for_dragging: 'span.name'}); </script>
+   
+   Then user will be able to drag branch by dragging 'My Element' text.
+
+
+== Callbacks
+
+1. expand - function(event, branch)
+2. collapse - function(event, branch)
+
+It will be called when user expand/collapse some branch (not all branches). Argument 'branch' contains
+jquery object with <ul> DOM element that was expanded/collapsed.
+
+3. expand_all - function(event, tree)
+4. collapse_all - function(event, tree)
+
+It will be called when user expand/collapse all branches (by 'Expand/Collapse All').
+Argument 'tree' contains jquery object of current tree (this.element)
+
+5. drop - function(event, ui)
+
+It will be called when user drags some branch and drops it to another branch.
+Argument 'ui' is a hash. 
+ui.draggable contains <li> element that was dragged.
+ui.droppable contains <li> element where ui.draggable was dropped.
+
+
+== Authors and Credits
+ 
+Written by Anton Astashov
