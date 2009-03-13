@@ -1,0 +1,39 @@
+* {
+    margin: 0;
+    padding: 0;
+}
+p { margin: 1em; }
+ul {
+  list-style: none;
+}
+li {
+  padding: 0 1.5em;
+}
+li div {
+  padding: 0.4em 0;
+}
+.treeview {
+    margin-bottom: 3em;
+}
+.ui-tree-handler {
+  padding-right: 0.3em;
+  text-decoration: none;
+}
+.ui-tree-expand {
+  color: green;
+}
+.ui-tree-collapse {
+  color: red;
+}
+.ui-tree-draggable-over {
+  background: silver;
+}
+.ui-tree-expand-all, .ui-tree-collapse-all {
+  display: inline;
+  margin-right: 1em;
+  line-height: 2em;
+  font-size: 0.8em;
+}
+.ui-tree-expand-all { color: green; }
+.ui-tree-collapse-all { color: red; }
+
