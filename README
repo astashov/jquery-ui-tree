@@ -79,7 +79,8 @@ Without root:
 5. 'add_collapse_all' - Add 'Collapse All' link that collapses all branches before the tree. Default is true.
 6. 'expand_all_text' - Text that 'Expand All' link will contain. Default is 'Expand All'.
 7. 'collapse_all_text' - Text that 'Collapse All' link will contain. Default is 'Collapse All'.
-8. 'handle_for_dragging' - Selector for handle for dragging. This element should be contained in
+8. 'collapse_after_init' - Collapse all tree after initialization. Default is true.
+9. 'handle_for_dragging' - Selector for handle for dragging. This element should be contained in
    <div></div> section. Default is null. If this parameter is null, then drag'n'drop will be disabled. 
    Example:
    

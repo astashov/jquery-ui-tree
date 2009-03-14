@@ -77,7 +77,8 @@
      * 5. 'add_collapse_all' - Add 'Collapse All' link that collapses all branches before the tree. Default is true.
      * 6. 'expand_all_text' - Text that 'Expand All' link will contain. Default is 'Expand All'.
      * 7. 'collapse_all_text' - Text that 'Collapse All' link will contain. Default is 'Collapse All'.
-     * 8. 'handle_for_dragging' - Selector for handle for dragging. This element should be contained in
+     * 8. 'collapse_after_init' - Collapse all tree after initialization. Default is true.
+     * 9. 'handle_for_dragging' - Selector for handle for dragging. This element should be contained in
      *    <div></div> section. Default is null. If this parameter is null, then drag'n'drop will be disabled. 
      *    Example:
      *    
@@ -133,15 +134,13 @@
             widget._set_with_root_option();
 
             if(widget.options.collapse_after_init) { 
-                // Hide all branches by default
+                // Hide all branches
                 $('ul', widget.element).hide();
                 // Show first (root) branch
                 widget._parent().children('ul').show();
             }
 
-            // Create tree handlers for collapsing/expanding branches
-            // Will handlers be collapsed or expanded by default - it depends on 
-            // settings parameter 'collapse_after_init' 
+            // Create links - tree handlers for collapsing/expanding branches
             widget._build_tree_handlers();
 
             if(widget.options.add_collapse_all) { widget._add_collapse_all_link(widget.element); }
@@ -149,6 +148,7 @@
             if(widget.options.handle_for_dragging) { widget._init_drag_n_drop(); }
         },
         
+        // Expand given branch. Attribute 'branch' can be selector or jQuery object
         expand: function(branch, method) {
             method = method || 'instant'
             branch = branch.jquery ? branch : $(branch, this.element);
@@ -157,11 +157,12 @@
             } else if(method == 'slide') {
               branch.slideDown();
             }
-            var a = branch.parent().children('div').children('.' + expand_link_class);
+            var a = branch.siblings('div').children('.' + expand_link_class);
             this._set_link_to_collapse(a);
             this._trigger('expand', 0, branch)
         },
         
+        // Collapse given branch. Attribute 'branch' can be selector or jQuery object
         collapse: function(branch, method) {
             method = method || 'instant'
             branch = branch.jquery ? branch : $(branch, this.element);
@@ -170,15 +171,17 @@
             } else if(method == 'slide') {
               branch.slideUp();
             }
-            var a = branch.parent().children('div').children('.' + collapse_link_class);
+            var a = branch.siblings('div').children('.' + collapse_link_class);
             this._set_link_to_expand(a);
             this._trigger('collapse', 0, branch)
         },
         
+        // Rebuild all tree handlers links
         update: function() {
             this._build_tree_handlers();
         },
         
+        // Return true if branch is collapsed. Attribute 'branch' can be selector or jQuery object
         is_collapsed: function(branch) {
             branch = branch.jquery ? branch : $(branch, this.element);
             return (branch.get(0).style.display == 'none');
@@ -225,8 +228,9 @@
             var widget = this;
             
             $('li', widget.element).draggable({
-              handle: widget.options.handle_for_dragging,
-              revert: 'invalid'
+              handle: widget.options.handle_for_dragging + ':first',
+              revert: 'invalid',
+              cursor: 'move'
             });
             $(widget.options.handle_for_dragging, widget.element).droppable({
               over: function() {
@@ -273,7 +277,7 @@
             var self = this.element;
             $('ul', self).each(function() {
                 var ul = $(this);
-                var div = ul.parent().children('div');
+                var div = ul.siblings('div');
                 
                 if(ul.children('li').size() == 0) {
                     div.children('a.' + common_link_class).remove();
@@ -292,7 +296,7 @@
                         div.prepend(a);
 
                         a.click(function() {
-                            widget.is_collapsed(ul) ? widget.expand(ul, 'slide') : widget.collapse(ul, 'slide');
+                            widget.is_collapsed(ul) ? widget.expand(ul) : widget.collapse(ul);
                             return false;
                         });
                     }
