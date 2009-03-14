@@ -227,11 +227,20 @@
         _init_drag_n_drop: function() {
             var widget = this;
             
-            $('li', widget.element).draggable({
-              handle: widget.options.handle_for_dragging + ':first',
-              revert: 'invalid',
-              cursor: 'move'
-            });
+            // Add draggable widget
+            var draggable_options = {};
+            draggable_options.handle = widget.options.handle_for_dragging + ':first';
+            draggable_options.cursor = 'move';
+            if($.browser.opera) {
+                draggable_options.stop = function(event, ui) {
+                    ui.helper.attr('style', 'position: relative');
+                }
+            } else {
+                draggable_options.revert = 'invalid';
+            }
+            $('li', widget.element).draggable(draggable_options);
+            
+            // Add droppable widget
             $(widget.options.handle_for_dragging, widget.element).droppable({
               over: function() {
                   $(this).addClass(draggable_over_class);
