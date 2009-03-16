@@ -184,7 +184,7 @@
         // Return true if branch is collapsed. Attribute 'branch' can be selector or jQuery object
         is_collapsed: function(branch) {
             branch = branch.jquery ? branch : $(branch, this.element);
-            return (branch.get(0).style.display == 'none');
+            return branch.is(':hidden');
         },
         
         _add_collapse_all_link: function() {
